@@ -1,0 +1,84 @@
+
+1.进入数据库
+mysql -u root -p
+
+2.显示所有数据库
+show databases;
+
+3. 创建数据库 test
+create database test; 
+
+4. 选择数据库
+use test; 
+
+5.创建表 websites
+CREATE TABLE IF NOT EXISTS `websites`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `url` VARCHAR(40) NOT NULL,
+    `aleax` INT,
+    `country` VARCHAR(100),
+    PRIMARY KEY ( `id` )
+ );
+
+6.显示表结构
+mysql> describe websites;
++---------+------------------+------+-----+---------+----------------+
+| Field   | Type             | Null | Key | Default | Extra          |
++---------+------------------+------+-----+---------+----------------+
+| id      | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(100)     | NO   |     | NULL    |                |
+| url     | varchar(40)      | NO   |     | NULL    |                |
+| aleax   | int(11)          | YES  |     | NULL    |                |
+| country | varchar(100)     | YES  |     | NULL    |                |
++---------+------------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+
+7.删除表
+mysql> DROP TABLE websites;
+Query OK, 0 rows affected (0.06 sec)
+
+
+8.插入数据
+ INSERT INTO websites (name,url,aleax,country) VALUES ("Google","https://www.google.cm/",1,"USA");
+ INSERT INTO website (name,url,aleax,country) VALUES ("淘宝","https://www.taobao.com/",13,"CN");
+ INSERT INTO websites (name,url,aleax,country) VALUES ("教程","http://www.runoob.com",4689,"CN");
+ INSERT INTO websites (name,url,aleax,country) VALUES ("微博","http://weibo.com/",20,"CN");
+ INSERT INTO websites (name,url,aleax,country) VALUES ("Facebook","https://www.facebook.com/",3,"USA");
+
+9.查所有数据
+mysql> SELECT * FROM websites;
++----+----------+---------------------------+-------+---------+
+| id | name     | url                       | aleax | country |
++----+----------+---------------------------+-------+---------+
+|  1 | Google   | https://www.google.cm/    |     1 | USA     |
+|  2 | 教程     | http://www.runoob.com     |  4689 | CN      |
+|  3 | 微博     | http://weibo.com/         |    20 | CN      |
+|  4 | Facebook | https://www.facebook.com/ |     3 | USA     |
++----+----------+---------------------------+-------+---------+
+4 rows in set (0.00 sec)
+
+10. 查询无重复数据
+mysql> SELECT DISTINCT name,country FROM websites;
++----------+---------+
+| name     | country |
++----------+---------+
+| Google   | USA     |
+| 教程     | CN      |
+| 微博     | CN      |
+| Facebook | USA     |
++----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT country FROM websites;
++---------+
+| country |
++---------+
+| USA     |
+| CN      |
++---------+
+2 rows in set (0.00 sec)
+
+11.
+
