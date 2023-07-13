@@ -1,3 +1,4 @@
+基本操作
 
 1.进入数据库
 mysql -u root -p
@@ -80,5 +81,48 @@ mysql> SELECT DISTINCT country FROM websites;
 +---------+
 2 rows in set (0.00 sec)
 
-11.
+11.更新
+
+mysql> UPDATE websites SET aleax = 999,country = ZH-CN WHERE country = CN;
+ERROR 1054 (42S22): Unknown column 'CN' in 'where clause'
+mysql> UPDATE websites SET aleax = 999,country = "ZH-CN" WHERE country = "CN";
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM websites;
++----+----------+---------------------------+-------+---------+
+| id | name     | url                       | aleax | country |
++----+----------+---------------------------+-------+---------+
+|  1 | Google   | https://www.google.cm/    |     1 | USA     |
+|  2 | 教程     | http://www.runoob.com     |   999 | ZH-CN   |
+|  3 | 微博     | http://weibo.com/         |   999 | ZH-CN   |
+|  4 | Facebook | https://www.facebook.com/ |     3 | USA     |
++----+----------+---------------------------+-------+---------+
+4 rows in set (0.00 sec)
+
+
+12.删除某一行
+
+mysql> DELETE FROM websites WHERE name = "Facebook" AND country = "USA";
+Query OK, 1 row affected (0.40 sec)
+
+mysql> SELECT * FROM websites;
++----+--------+------------------------+-------+---------+
+| id | name   | url                    | aleax | country |
++----+--------+------------------------+-------+---------+
+|  1 | Google | https://www.google.cm/ |     1 | USA     |
+|  2 | 教程   | http://www.runoob.com  |   999 | ZH-CN   |
+|  3 | 微博   | http://weibo.com/      |   999 | ZH-CN   |
++----+--------+------------------------+-------+---------+
+3 rows in set (0.00 sec)
+
+13.删除整张表内容
+mysql> DELETE FROM websites;
+Query OK, 3 rows affected (0.00 sec)
+
+mysql> SELECT * FROM websites;
+Empty set (0.01 sec)
+
+
+
 
