@@ -1,4 +1,4 @@
-基本操作
+MySQL基本操作
 
 1.进入数据库
 mysql -u root -p
@@ -13,6 +13,8 @@ create database test;
 use test; 
 
 5.创建表 websites
+每个表可以有多个 UNIQUE 约束，但是每个表只能有一个 PRIMARY KEY 约束。
+
 CREATE TABLE IF NOT EXISTS `websites`(
     `id` INT UNSIGNED AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
@@ -21,6 +23,13 @@ CREATE TABLE IF NOT EXISTS `websites`(
     `country` VARCHAR(100),
     PRIMARY KEY ( `id` )
  );
+
+ CREATE TABLE `apps` (
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `app_name` VARCHAR(50),
+    `url` VARCHAR(100),
+    `country` VARCHAR(10),
+    PRIMARY KEY(`id`));
 
 6.显示表结构
 mysql> describe websites;
@@ -47,6 +56,11 @@ Query OK, 0 rows affected (0.06 sec)
  INSERT INTO websites (name,url,aleax,country) VALUES ("教程","http://www.runoob.com",4689,"CN");
  INSERT INTO websites (name,url,aleax,country) VALUES ("微博","http://weibo.com/",20,"CN");
  INSERT INTO websites (name,url,aleax,country) VALUES ("Facebook","https://www.facebook.com/",3,"USA");
+
+
+INSERT INTO apps (app_name,url,country) VALUES ("QQ app","http://im.qq.com/","CN");
+INSERT INTO apps (app_name,url,country) VALUES ("微博 app","http://weibo.com/","CN");
+INSERT INTO apps (app_name,url,country) VALUES ("淘宝 app","https://www.taobao.com/","CN");
 
 9.查所有数据
 mysql> SELECT * FROM websites;
@@ -122,6 +136,171 @@ Query OK, 3 rows affected (0.00 sec)
 
 mysql> SELECT * FROM websites;
 Empty set (0.01 sec)
+
+
+MySQL高级操作
+
+14. LIMIT 取最上方2条数据
+mysql> SELECT * FROM websites LIMIT 2;
++----+--------+------------------------+-------+---------+
+| id | name   | url                    | aleax | country |
++----+--------+------------------------+-------+---------+
+|  5 | Google | https://www.google.cm/ |     1 | USA     |
+|  6 | 教程   | http://www.runoob.com  |  4689 | CN      |
++----+--------+------------------------+-------+---------+
+2 rows in set (0.00 sec)
+
+15.LIKE模糊匹配
+mysql> SELECT * FROM websites WHERE name LIKE 'g%';
++----+--------+------------------------+-------+---------+
+| id | name   | url                    | aleax | country |
++----+--------+------------------------+-------+---------+
+|  5 | Google | https://www.google.cm/ |     1 | USA     |
++----+--------+------------------------+-------+---------+
+1 row in set (0.00 sec)
+
+16.SQL通配符 % _ [charlist]  [^charlist] [!charlist]
+mysql> SELECT * FROM websites WHERE name LIKE "face%";
++----+----------+---------------------------+-------+---------+
+| id | name     | url                       | aleax | country |
++----+----------+---------------------------+-------+---------+
+|  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
++----+----------+---------------------------+-------+---------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM websites WHERE name LIKE "_ace";
+Empty set (0.00 sec)
+
+SQL 语句选取 name 以 "G"、"F" 或 "s" 开始的所有网站：
+mysql> SELECT * FROM websites WHERE name REGEXP "^[GFs]";
++----+----------+---------------------------+-------+---------+
+| id | name     | url                       | aleax | country |
++----+----------+---------------------------+-------+---------+
+|  5 | Google   | https://www.google.cm/    |     1 | USA     |
+|  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
++----+----------+---------------------------+-------+---------+
+2 rows in set (0.00 sec)
+
+
+下面的 SQL 语句选取 name 以 A 到 H 字母开头的网站：
+mysql> SELECT * FROM websites WHERE name REGEXP '^[A-H]';
++----+----------+---------------------------+-------+---------+
+| id | name     | url                       | aleax | country |
++----+----------+---------------------------+-------+---------+
+|  5 | Google   | https://www.google.cm/    |     1 | USA     |
+|  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
++----+----------+---------------------------+-------+---------+
+2 rows in set (0.00 sec)
+
+下面的 SQL 语句选取 name 不以 A 到 H 字母开头的网站：
+
+mysql> SELECT * FROM websites WHERE name REGEXP '^[^A-H]';
++----+--------+-----------------------+-------+---------+
+| id | name   | url                   | aleax | country |
++----+--------+-----------------------+-------+---------+
+|  6 | 教程   | http://www.runoob.com |  4689 | CN      |
+|  7 | 微博   | http://weibo.com/     |    20 | CN      |
++----+--------+-----------------------+-------+---------+
+2 rows in set (0.00 sec)
+
+
+
+17.IN 操作
+mysql> SELECT * FROM websites WHERE name IN ("Google","教程");
++----+--------+------------------------+-------+---------+
+| id | name   | url                    | aleax | country |
++----+--------+------------------------+-------+---------+
+|  5 | Google | https://www.google.cm/ |     1 | USA     |
+|  6 | 教程   | http://www.runoob.com  |  4689 | CN      |
++----+--------+------------------------+-------+---------+
+2 rows in set (0.00 sec)
+
+18.BETWEEN
+mysql> SELECT * FROM websites WHERE aleax BETWEEN 1 AND 20;
++----+----------+---------------------------+-------+---------+
+| id | name     | url                       | aleax | country |
++----+----------+---------------------------+-------+---------+
+|  5 | Google   | https://www.google.cm/    |     1 | USA     |
+|  7 | 微博     | http://weibo.com/         |    20 | CN      |
+|  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
++----+----------+---------------------------+-------+---------+
+3 rows in set (0.00 sec)
+
+19.别名
+mysql> SELECT name AS n,country AS c FROM websites;
++----------+------+
+| n        | c    |
++----------+------+
+| Google   | USA  |
+| 教程     | CN   |
+| 微博     | CN   |
+| Facebook | USA  |
++----------+------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT name n,country AS c FROM websites;
++----------+------+
+| n        | c    |
++----------+------+
+| Google   | USA  |
+| 教程     | CN   |
+| 微博     | CN   |
+| Facebook | USA  |
++----------+------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT web.name,web.country FROM websites AS web WHERE web.name = "Google
+";
++--------+---------+
+| name   | country |
++--------+---------+
+| Google | USA     |
++--------+---------+
+1 row in set (0.00 sec)
+
+mysql> SELECT web.name,web.country FROM websites web WHERE web.name = "Google";
++--------+---------+
+| name   | country |
++--------+---------+
+| Google | USA     |
++--------+---------+
+1 row in set (0.00 sec)
+
+
+20.SQL UNION 实例
+mysql> SELECT country FROM websites UNION SELECT country FROM apps ORDER BY country;
++---------+
+| country |
++---------+
+| CN      |
+| USA     |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT country FROM websites UNION ALL SELECT country FROM apps ORDER BY
+country;
++---------+
+| country |
++---------+
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| USA     |
+| USA     |
++---------+
+7 rows in set (0.00 sec)
+
+21. SELECT INTO 实例
+
+
+
+
+
+
+
+
 
 
 
