@@ -31,7 +31,31 @@ CREATE TABLE IF NOT EXISTS `websites`(
     `country` VARCHAR(10),
     PRIMARY KEY(`id`));
 
+ CREATE TABLE `order` (
+    `OrderId` INT AUTO_INCREMENT,
+    `ProductName` VARCHAR(50),
+    `OrderDate` DATE,
+    PRIMARY KEY(`OrderId`));
+
+
+CREATE TABLE user
+(
+    id BIGINT(20) NOT NULL COMMENT '主键ID',
+    name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    age INT(11) NULL DEFAULT NULL COMMENT '年龄',
+    email VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
+    PRIMARY KEY (id)
+);
+
+INSERT INTO user (id, name, age, email) VALUES
+(1, 'Jone', 18, 'test1@baomidou.com'),
+(2, 'Jack', 20, 'test2@baomidou.com'),
+(3, 'Tom', 28, 'test3@baomidou.com'),
+(4, 'Sandy', 21, 'test4@baomidou.com'),
+(5, 'Billie', 24, 'test5@baomidou.com');
+
 6.显示表结构
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> describe websites;
 +---------+------------------+------+-----+---------+----------------+
 | Field   | Type             | Null | Key | Default | Extra          |
@@ -43,6 +67,7 @@ mysql> describe websites;
 | country | varchar(100)     | YES  |     | NULL    |                |
 +---------+------------------+------+-----+---------+----------------+
 5 rows in set (0.00 sec)
+——————————————————————————————————————————————————————————————————————————————————————
 
 
 7.删除表
@@ -62,7 +87,12 @@ INSERT INTO apps (app_name,url,country) VALUES ("QQ app","http://im.qq.com/","CN
 INSERT INTO apps (app_name,url,country) VALUES ("微博 app","http://weibo.com/","CN");
 INSERT INTO apps (app_name,url,country) VALUES ("淘宝 app","https://www.taobao.com/","CN");
 
+
+INSERT INTO order (app_name,url,country) VALUES ("QQ app","http://im.qq.com/","CN");
+
+
 9.查所有数据
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites;
 +----+----------+---------------------------+-------+---------+
 | id | name     | url                       | aleax | country |
@@ -73,8 +103,10 @@ mysql> SELECT * FROM websites;
 |  4 | Facebook | https://www.facebook.com/ |     3 | USA     |
 +----+----------+---------------------------+-------+---------+
 4 rows in set (0.00 sec)
+——————————————————————————————————————————————————————————————————————————————————————
 
 10. 查询无重复数据
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT DISTINCT name,country FROM websites;
 +----------+---------+
 | name     | country |
@@ -85,7 +117,7 @@ mysql> SELECT DISTINCT name,country FROM websites;
 | Facebook | USA     |
 +----------+---------+
 4 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT DISTINCT country FROM websites;
 +---------+
 | country |
@@ -94,15 +126,16 @@ mysql> SELECT DISTINCT country FROM websites;
 | CN      |
 +---------+
 2 rows in set (0.00 sec)
+——————————————————————————————————————————————————————————————————————————————————————
 
 11.更新
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> UPDATE websites SET aleax = 999,country = ZH-CN WHERE country = CN;
 ERROR 1054 (42S22): Unknown column 'CN' in 'where clause'
 mysql> UPDATE websites SET aleax = 999,country = "ZH-CN" WHERE country = "CN";
 Query OK, 2 rows affected (0.01 sec)
 Rows matched: 2  Changed: 2  Warnings: 0
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites;
 +----+----------+---------------------------+-------+---------+
 | id | name     | url                       | aleax | country |
@@ -113,13 +146,13 @@ mysql> SELECT * FROM websites;
 |  4 | Facebook | https://www.facebook.com/ |     3 | USA     |
 +----+----------+---------------------------+-------+---------+
 4 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 
 12.删除某一行
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> DELETE FROM websites WHERE name = "Facebook" AND country = "USA";
 Query OK, 1 row affected (0.40 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites;
 +----+--------+------------------------+-------+---------+
 | id | name   | url                    | aleax | country |
@@ -129,7 +162,7 @@ mysql> SELECT * FROM websites;
 |  3 | 微博   | http://weibo.com/      |   999 | ZH-CN   |
 +----+--------+------------------------+-------+---------+
 3 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 13.删除整张表内容
 mysql> DELETE FROM websites;
 Query OK, 3 rows affected (0.00 sec)
@@ -141,6 +174,7 @@ Empty set (0.01 sec)
 MySQL高级操作
 
 14. LIMIT 取最上方2条数据
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites LIMIT 2;
 +----+--------+------------------------+-------+---------+
 | id | name   | url                    | aleax | country |
@@ -149,8 +183,9 @@ mysql> SELECT * FROM websites LIMIT 2;
 |  6 | 教程   | http://www.runoob.com  |  4689 | CN      |
 +----+--------+------------------------+-------+---------+
 2 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 15.LIKE模糊匹配
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE name LIKE 'g%';
 +----+--------+------------------------+-------+---------+
 | id | name   | url                    | aleax | country |
@@ -158,8 +193,9 @@ mysql> SELECT * FROM websites WHERE name LIKE 'g%';
 |  5 | Google | https://www.google.cm/ |     1 | USA     |
 +----+--------+------------------------+-------+---------+
 1 row in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 16.SQL通配符 % _ [charlist]  [^charlist] [!charlist]
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE name LIKE "face%";
 +----+----------+---------------------------+-------+---------+
 | id | name     | url                       | aleax | country |
@@ -167,11 +203,12 @@ mysql> SELECT * FROM websites WHERE name LIKE "face%";
 |  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
 +----+----------+---------------------------+-------+---------+
 1 row in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE name LIKE "_ace";
 Empty set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 SQL 语句选取 name 以 "G"、"F" 或 "s" 开始的所有网站：
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE name REGEXP "^[GFs]";
 +----+----------+---------------------------+-------+---------+
 | id | name     | url                       | aleax | country |
@@ -180,9 +217,10 @@ mysql> SELECT * FROM websites WHERE name REGEXP "^[GFs]";
 |  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
 +----+----------+---------------------------+-------+---------+
 2 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 
 下面的 SQL 语句选取 name 以 A 到 H 字母开头的网站：
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE name REGEXP '^[A-H]';
 +----+----------+---------------------------+-------+---------+
 | id | name     | url                       | aleax | country |
@@ -191,9 +229,10 @@ mysql> SELECT * FROM websites WHERE name REGEXP '^[A-H]';
 |  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
 +----+----------+---------------------------+-------+---------+
 2 rows in set (0.00 sec)
+——————————————————————————————————————————————————————————————————————————————————————
 
 下面的 SQL 语句选取 name 不以 A 到 H 字母开头的网站：
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE name REGEXP '^[^A-H]';
 +----+--------+-----------------------+-------+---------+
 | id | name   | url                   | aleax | country |
@@ -202,10 +241,11 @@ mysql> SELECT * FROM websites WHERE name REGEXP '^[^A-H]';
 |  7 | 微博   | http://weibo.com/     |    20 | CN      |
 +----+--------+-----------------------+-------+---------+
 2 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 
 
 17.IN 操作
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE name IN ("Google","教程");
 +----+--------+------------------------+-------+---------+
 | id | name   | url                    | aleax | country |
@@ -214,8 +254,9 @@ mysql> SELECT * FROM websites WHERE name IN ("Google","教程");
 |  6 | 教程   | http://www.runoob.com  |  4689 | CN      |
 +----+--------+------------------------+-------+---------+
 2 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 18.BETWEEN
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT * FROM websites WHERE aleax BETWEEN 1 AND 20;
 +----+----------+---------------------------+-------+---------+
 | id | name     | url                       | aleax | country |
@@ -225,8 +266,9 @@ mysql> SELECT * FROM websites WHERE aleax BETWEEN 1 AND 20;
 |  8 | Facebook | https://www.facebook.com/ |     3 | USA     |
 +----+----------+---------------------------+-------+---------+
 3 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 19.别名
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT name AS n,country AS c FROM websites;
 +----------+------+
 | n        | c    |
@@ -237,7 +279,7 @@ mysql> SELECT name AS n,country AS c FROM websites;
 | Facebook | USA  |
 +----------+------+
 4 rows in set (0.01 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT name n,country AS c FROM websites;
 +----------+------+
 | n        | c    |
@@ -248,7 +290,7 @@ mysql> SELECT name n,country AS c FROM websites;
 | Facebook | USA  |
 +----------+------+
 4 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT web.name,web.country FROM websites AS web WHERE web.name = "Google
 ";
 +--------+---------+
@@ -257,7 +299,7 @@ mysql> SELECT web.name,web.country FROM websites AS web WHERE web.name = "Google
 | Google | USA     |
 +--------+---------+
 1 row in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT web.name,web.country FROM websites web WHERE web.name = "Google";
 +--------+---------+
 | name   | country |
@@ -265,9 +307,10 @@ mysql> SELECT web.name,web.country FROM websites web WHERE web.name = "Google";
 | Google | USA     |
 +--------+---------+
 1 row in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 
 20.SQL UNION 实例
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT country FROM websites UNION SELECT country FROM apps ORDER BY country;
 +---------+
 | country |
@@ -276,7 +319,7 @@ mysql> SELECT country FROM websites UNION SELECT country FROM apps ORDER BY coun
 | USA     |
 +---------+
 2 rows in set (0.00 sec)
-
+——————————————————————————————————————————————————————————————————————————————————————
 mysql> SELECT country FROM websites UNION ALL SELECT country FROM apps ORDER BY
 country;
 +---------+
@@ -291,8 +334,274 @@ country;
 | USA     |
 +---------+
 7 rows in set (0.00 sec)
+——————————————————————————————————————————————————————————————————————————————————————
+21. ALTER TABLE 语句
+在表中添加列，请使用下面的语法:
 
-21. SELECT INTO 实例
+ALTER TABLE table_name
+ADD column_name datatype
+如需删除表中的列，请使用下面的语法（请注意，某些数据库系统不允许这种在数据库表中删除列的方式）：
+
+ALTER TABLE table_name
+DROP COLUMN column_name
+
+改变表中列的数据类型，请使用下面的语法：
+
+SQL Server / MS Access：
+
+ALTER TABLE table_name
+ALTER COLUMN column_name datatype
+My SQL / Oracle：
+
+ALTER TABLE table_name
+MODIFY COLUMN column_name datatype
+——————————————————————————————————————————————————————————————————————————————————————
+mysql> ALTER TABLE websites ADD marker VARCHAR(100);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM websites;
++----+----------+---------------------------+-------+---------+--------+
+| id | name     | url                       | aleax | country | marker |
++----+----------+---------------------------+-------+---------+--------+
+|  1 | Google   | https://www.google.cm/    |     1 | USA     | NULL   |
+|  2 | 教程     | http://www.runoob.com     |  4689 | CN      | NULL   |
+|  3 | 微博     | http://weibo.com/         |    20 | CN      | NULL   |
+|  4 | Facebook | https://www.facebook.com/ |     3 | USA     | NULL   |
++----+----------+---------------------------+-------+---------+--------+
+4 rows in set (0.00 sec)
+——————————————————————————————————————————————————————————————————————————————————————
+mysql> SELECT * FROM websites;
++----+----------+---------------------------+-------+---------+--------+----------+
+| id | name     | url                       | aleax | country | marker | marker_2 |
++----+----------+---------------------------+-------+---------+--------+----------+
+|  1 | Google   | https://www.google.cm/    |     1 | USA     | NULL   | NULL     |
+|  2 | 教程     | http://www.runoob.com     |  4689 | CN      | NULL   | NULL     |
+|  3 | 微博     | http://weibo.com/         |    20 | CN      | NULL   | NULL     |
+|  4 | Facebook | https://www.facebook.com/ |     3 | USA     | NULL   | NULL     |
++----+----------+---------------------------+-------+---------+--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE websites DROP COLUMN marker_2;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM websites;
++----+----------+---------------------------+-------+---------+--------+
+| id | name     | url                       | aleax | country | marker |
++----+----------+---------------------------+-------+---------+--------+
+|  1 | Google   | https://www.google.cm/    |     1 | USA     | NULL   |
+|  2 | 教程     | http://www.runoob.com     |  4689 | CN      | NULL   |
+|  3 | 微博     | http://weibo.com/         |    20 | CN      | NULL   |
+|  4 | Facebook | https://www.facebook.com/ |     3 | USA     | NULL   |
++----+----------+---------------------------+-------+---------+--------+
+4 rows in set (0.00 sec)
+——————————————————————————————————————————————————————————————————————————————————————
+mysql> SELECT * FROM websites;
++----+----------+---------------------------+-------+---------+--------+----------+
+| id | name     | url                       | aleax | country | marker | marker_2 |
++----+----------+---------------------------+-------+---------+--------+----------+
+|  1 | Google   | https://www.google.cm/    |     1 | USA     | NULL   | NULL     |
+|  2 | 教程     | http://www.runoob.com     |  4689 | CN      | NULL   | NULL     |
+|  3 | 微博     | http://weibo.com/         |    20 | CN      | NULL   | NULL     |
+|  4 | Facebook | https://www.facebook.com/ |     3 | USA     | NULL   | NULL     |
++----+----------+---------------------------+-------+---------+--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE websites MODIFY COLUMN marker_2 INT;
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+——————————————————————————————————————————————————————————————————————————————————————
+
+22.Date 函数
+NOW()	返回当前的日期和时间
+CURDATE()	返回当前的日期
+CURTIME()	返回当前的时间
+DATE()	提取日期或日期/时间表达式的日期部分
+EXTRACT()	返回日期/时间的单独部分
+DATE_ADD()	向日期添加指定的时间间隔
+DATE_SUB()	从日期减去指定的时间间隔
+DATEDIFF()	返回两个日期之间的天数
+DATE_FORMAT()	用不同的格式显示日期/时间
+
+MySQL 使用下列数据类型在数据库中存储日期或日期/时间值：
+DATE - 格式：YYYY-MM-DD
+DATETIME - 格式：YYYY-MM-DD HH:MM:SS
+TIMESTAMP - 格式：YYYY-MM-DD HH:MM:SS
+YEAR - 格式：YYYY 或 YY
+
+
+23.SQL Aggregate 函数
+SQL Aggregate 函数计算从列中取得的值，返回一个单一的值。
+
+有用的 Aggregate 函数：
+
+AVG() - 返回平均值
+COUNT() - 返回行数
+FIRST() - 返回第一个记录的值
+LAST() - 返回最后一个记录的值
+MAX() - 返回最大值
+MIN() - 返回最小值
+SUM() - 返回总和
+
+mysql> select avg(aleax) from websites;
++------------+
+| avg(aleax) |
++------------+
+|  1178.2500 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select count(aleax) from websites;
++--------------+
+| count(aleax) |
++--------------+
+|            4 |
++--------------+
+1 row in set (0.00 sec)
+
+SELECT aleax FROM websites ORDER BY aleax ASC LIMIT 1;
+
+mysql> SELECT aleax FROM websites ORDER BY aleax ASC LIMIT 1;
++-------+
+| aleax |
++-------+
+|     1 |
++-------+
+1 row in set (0.00 sec)
+
+
+mysql> SELECT aleax FROM websites ORDER BY aleax DESC LIMIT 1;
++-------+
+| aleax |
++-------+
+|  4689 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select MAX(aleax) from websites;
++------------+
+| MAX(aleax) |
++------------+
+|       4689 |
++------------+
+1 row in set (0.01 sec)
+
+
+mysql> select MIN(aleax) from websites;
++------------+
+| MIN(aleax) |
++------------+
+|          1 |
++------------+
+1 row in set (0.00 sec)
+
+
+mysql> select SUM(aleax) from websites;
++------------+
+| SUM(aleax) |
++------------+
+|       4713 |
++------------+
+1 row in set (0.00 sec)
+
+
+
+24.SQL Scalar 函数
+SQL Scalar 函数基于输入值，返回一个单一的值。
+
+有用的 Scalar 函数：
+UCASE() - 将某个字段转换为大写
+LCASE() - 将某个字段转换为小写
+MID() - 从某个文本字段提取字符，MySql 中使用
+SubString(字段，1，end) - 从某个文本字段提取字符
+LEN() - 返回某个文本字段的长度
+ROUND() - 对某个数值字段进行指定小数位数的四舍五入
+NOW() - 返回当前的系统日期和时间
+FORMAT() - 格式化某个字段的显示方式
+
+mysql> SELECT UCASE(name) FROM websites;
++-------------+
+| UCASE(name) |
++-------------+
+| GOOGLE      |
+| 教程        |
+| 微博        |
+| FACEBOOK    |
++-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT LCASE(name) FROM websites;
++-------------+
+| LCASE(name) |
++-------------+
+| google      |
+| 教程        |
+| 微博        |
+| facebook    |
++-------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT MID(name,1,4) FROM websites;
++---------------+
+| MID(name,1,4) |
++---------------+
+| Goog          |
+| 教程          |
+| 微博          |
+| Face          |
++---------------+
+4 rows in set (0.01 sec)
+
+
+
+
+
+
+25.GROUP BY 语句可结合一些聚合函数来使用
+
+mysql> SELECT country,SUM(aleax) AS num FROM websites GROUP BY country;
++---------+------+
+| country | num  |
++---------+------+
+| USA     |    4 |
+| CN      | 4709 |
++---------+------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT country,COUNT(aleax) AS num FROM websites GROUP BY country;
++---------+-----+
+| country | num |
++---------+-----+
+| USA     |   2 |
+| CN      |   2 |
++---------+-----+
+2 rows in set (0.00 sec)
+
+
+26.在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与聚合函数一起使用,HAVING 子句可以让我们筛选分组后的各组数据
+
+mysql> SELECT country,SUM(aleax) AS num FROM websites GROUP BY country HAVING SUM(aleax) > 1000;
++---------+------+
+| country | num  |
++---------+------+
+| CN      | 4709 |
++---------+------+
+1 row in set (0.01 sec)
+
+27.EXISTS 运算符用于判断查询子句是否有记录，如果有一条或多条记录存在返回 True，否则返回 False。
+SELECT Websites.name, Websites.url 
+FROM Websites 
+WHERE EXISTS (SELECT count FROM access_log WHERE Websites.id = access_log.site_id AND count > 200);
+
+
+
+
+
+
+
+
+
 
 
 
